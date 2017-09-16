@@ -26,6 +26,7 @@ wmsx.Machine = function() {
         bus.powerOn();
         if (syf) syf.powerOn();
         if (rtc) rtc.powerOn();
+        if (http) http.powerOn();
         ppi.powerOn();
         psg.powerOn();
         vdp.powerOn();
@@ -41,6 +42,7 @@ wmsx.Machine = function() {
         vdp.powerOff();
         psg.powerOff();
         ppi.powerOff();
+        if (http) http.powerOff();
         if (rtc) rtc.powerOff();
         if (syf) syf.powerOff();
         bus.powerOff();
@@ -56,6 +58,7 @@ wmsx.Machine = function() {
         controllersSocket.resetControllers();
         if (syf) syf.reset();
         if (rtc) rtc.reset();
+        if (http) http.reset();
         psg.reset();
         vdp.reset();
         cpu.reset();
@@ -344,6 +347,9 @@ wmsx.Machine = function() {
         self.ppi = ppi = new wmsx.PPI(psg.getAudioChannel(), controllersSocket);
         self.rtc = rtc = new wmsx.RTC();
         self.syf = syf = new wmsx.SystemFlags();
+
+        self.http = http = new wmsx.HTTP();
+
         self.bus = bus = new wmsx.BUS(self, cpu);
         cpu.connectBus(bus);
         ppi.connectBus(bus);
@@ -351,6 +357,7 @@ wmsx.Machine = function() {
         psg.connectBus(bus);
         rtc.connectBus(bus);
         syf.connectBus(bus);
+        http.connectBus(bus);
     }
 
     function socketsCreate() {
@@ -405,6 +412,8 @@ wmsx.Machine = function() {
     var psg;
     var rtc;
     var syf;
+
+    var http;
 
     var userPaused = false;
     var userPauseMoreFrames = 0;
